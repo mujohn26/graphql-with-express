@@ -16,7 +16,7 @@ This project shows how to use graphql server in express using node js.
 * Run `npm install` To install the project dependencies
 * Run `sequelize db:migrate` To create all tables by running migrations
 * Run `npm dev-start` To start the application
-* Run `npm test` to run test
+
 
 ## Developer
 * [John MUGIRANEZA](https://github.com/mujohn26)
