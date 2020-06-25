@@ -1,19 +1,25 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import path from 'path';
-import cors from 'cors';
-import swagger from './routes/swagger';
-import Route from './routes/index';
+import { config } from 'dotenv';
+import { ApolloServer, gql } from 'apollo-server-express';
+
+config(); //
+
+const port = process.env.PORT || 3000;
+// GraphQl Schema
+
+const typeDefs = require('./schema/typeDefs');
+const resolvers = require('./schema/resolvers');
+const models = require('./database/models');
+
+const server = new ApolloServer({ typeDefs, resolvers, context: { models } });
 
 const app = express();
+server.applyMiddleware({ app });
 
-app.use(cors());
-app.use(express.json());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use('/static', express.static(path.join(__dirname, 'public')));
+// models.sequelize.authenticate();
+// models.sequelize.sync();
 
-app.use('/api/v1', swagger, Route);
-app.get('/', (req, res) => res.status(200).send({ status: 200, message: 'Welcome to Barefoot Nomad!' }));
+app.listen({ port: 3000 }, () => console.log(`🚀 Server ready at http://localhost:3000${server.graphqlPath}`));
 
 export default app;
